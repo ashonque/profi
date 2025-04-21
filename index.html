@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Portfolio</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPXcJQZi1MXPG6cY/iJTQUOhcWr7x9JvvoRxT2MZw1T"
+        crossorigin="anonymous">
+  <!-- Techy Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    /* Global vars */
+    :root {
+      --color-top-left: #02283B;
+      --color-top-right: #89F3F6;
+      --color-blend-mid: #0F0504;
+      --color-bottom-right: #F95800;
+      --nav-bg: rgba(255,255,255,0.15);
+      --nav-hover-bg: rgba(255,255,255,0.25);
+      --nav-color: #ffffff;
+      --line-color: #ffffff33;
+      --neon-blue: #00e5ff;
+      --neon-orange: #ff8c00;
+      --hover-scale: 1.05;
+      --transition-speed: 0.3s;
+    }
+    /* Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background-image: linear-gradient(135deg, var(--color-top-left) 0%, var(--color-top-right) 35%, var(--color-blend-mid) 60%, var(--color-bottom-right) 100%);
+      font-family: 'Poppins', sans-serif;
+      color: var(--nav-color);
+    }
+    /* Navbar */
+    nav { display: none; position: fixed; top: 0; left: 0; width: 100%; justify-content: space-between; align-items: center; padding: .5em 1em; background: var(--nav-bg); backdrop-filter: blur(10px); z-index: 10; }
+    nav.show { display: flex; }
+    .nav-left a, .nav-right a { text-decoration: none; color: var(--nav-color); padding: .5em .8em; border-radius: 6px; font-weight: 500; transition: background .2s, transform .2s; }
+    .nav-left a + a { margin-left: .5em; }
+    .nav-left a:hover, .nav-right a:hover { background: var(--nav-hover-bg); transform: translateY(-1px); }
+    /* Hero */
+    .content { padding-top: 4em; display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 4em); text-align: center; }
+    .content h1 { font-family: 'Orbitron', sans-serif; font-size: 3rem; }
+    .heart { font-size: 6rem; color: #FF0000; margin-top: 1rem; animation: beat 1s infinite; display: inline-block; transition: transform .2s, animation-duration 1s; cursor: pointer; }
+    @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    .heart:hover { transform: scale(1.5); animation-duration: .5s; }
+    .subtext { font-family: 'Orbitron', sans-serif; font-size: 1.25rem; margin-top: 1rem; display: inline-block; animation: glow 2s infinite; }
+    @keyframes glow { 0%,100% { text-shadow: 0 0 5px #fff, 0 0 10px #F95800; } 50% { text-shadow: 0 0 15px #fff, 0 0 30px #FF0000; } }
+    /* About Me */
+    #about-me { background: #000; color: #fff; padding: 3rem 1rem; }
+    #about-me h2 { margin-bottom: 1rem; }
+    #about-me p { margin-bottom: 2rem; }
+    /* 3D Cube */
+    .scene { width: 150px; height: 150px; margin: 4rem auto; perspective: 1000px; }
+    .cube { width: 150px; height: 150px; position: relative; transform-style: preserve-3d; animation: spin 5s infinite linear; }
+    .cube .face { position: absolute; width: 150px; height: 150px; background: rgba(173,216,230,0.3); border: 2px solid rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; color: #fff; text-transform: uppercase; box-shadow: inset 0 0 10px rgba(255,255,255,0.2); }
+    .cube .front { transform: translateZ(75px); }
+    .cube .back { transform: rotateY(180deg) translateZ(75px); }
+    .cube .right { transform: rotateY(90deg) translateZ(75px); }
+    .cube .left { transform: rotateY(-90deg) translateZ(75px); }
+    .cube .top { transform: rotateX(90deg) translateZ(75px); }
+    .cube .bottom { transform: rotateX(-90deg) translateZ(75px); }
+    @keyframes spin { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
+    /* Profile & Button */
+    .profile-wrapper { position: relative; width: fit-content; margin: 4rem auto 0; text-align: center; }
+    .profile-pic {
+      width: 350px;
+      transition: transform .3s;
+      margin: 0 auto;
+      display: block;
+      border-radius: 20px;
+    }
+    .profile-pic:hover { transform: scale(1.1); }
+    .my-timeline-button {
+      background: linear-gradient(90deg,#FE696C 0%,#FC9049 100%);
+      border: none;
+      color: #fff;
+      padding: .75rem 2rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      margin: 2rem auto 0;
+      display: block;
+    }
+    .my-timeline-button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+    /* Comic bubble */
+    .comic-bubble {
+      position: absolute;
+      top: 50%;
+      right: -240px;
+      transform: translateY(-50%) scale(0.5);
+      transform-origin: left center;
+      max-width: 220px;
+      padding: 1em;
+      background: #fff;
+      color: #000;
+      border: 2px solid #000;
+      border-radius: 10px;
+      box-shadow: 3px 3px #000;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .comic-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent;
+    }
+    .comic-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: 18px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: #000 transparent transparent transparent;
+    }
+    .profile-wrapper:hover .comic-bubble {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+    /* Rights */
+    #rights { background: #000; color: #fff; padding: 2rem 1rem; text-align: center; }
+    /* Timeline styles */
+    #timelineCollapse {
+      background: linear-gradient(135deg, #230535 0%, #8e0a75 100%);
+      padding: 2rem 1rem;
+    }
+    .section { max-width: 900px; margin: 2rem auto; }
+    .section h1 { font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: .5rem; text-transform: uppercase; letter-spacing: 1px; }
+    .timeline { position: relative; margin-top: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: var(--line-color); transform: translateX(-50%); }
+    .timeline .item { position: relative; width: 50%; padding: 1rem 2rem; transition: transform var(--transition-speed); }
+    .timeline .item:hover { z-index: 2; transform: scale(var(--hover-scale)); }
+    .timeline .item::before { content: ''; position: absolute; top: 1rem; width: 16px; height: 16px; border-radius: 50%; background: var(--neon-blue); box-shadow: 0 0 12px var(--neon-blue); transition: background var(--transition-speed), box-shadow var(--transition-speed); }
+    .timeline .item:hover::before { background: var(--neon-orange); box-shadow: 0 0 12px var(--neon-orange); }
+    .timeline .item.left { left: 0; text-align: right; }
+    .timeline .item.left::before { right: -8px; }
+    .timeline .item.left .content { margin-left: auto; transform: translateX(-40px); }
+    .timeline .item.right { left: 50%; text-align: left; }
+    .timeline .item.right::before { left: -8px; }
+    .timeline .item.right .content { margin-right: auto; transform: translateX(40px); }
+    .timeline .content { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 12px; width: 100%; max-width: 90%; opacity: 0; transform: translateY(20px); transition: opacity .6s ease-out, transform .6s ease-out; }
+    .timeline .content.show { opacity: 1; transform: translateY(0); }  
+    .timeline h2 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 1px; margin-bottom: .5rem; text-transform: uppercase; }
+    .timeline h4 { font-size: .9rem; font-weight: 500; margin-bottom: .75rem; color: var(--neon-orange); }
+    .timeline p { font-size: .95rem; line-height: 1.5; white-space: pre-wrap; }
+    @media (max-width: 768px) {
+      .timeline .item { width: 100%; padding: 1rem 3rem; }
+      .timeline::before { left: 2rem; }
+      .timeline .item::before { left: 2rem; }
+      .timeline .item.left, .timeline .item.right { left: 0 !important; }
+      .timeline .item .content { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a href="#about">About Me</a>
+      <a href="#timelineCollapse">My Journey</a>
+      <a href="#" id="contactLink">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" id="cvLink">Ashwin CV</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="content">
+    <h1 id="about">Welcome to Ashwin Louis Jose Portfolio</h1>
+    <p id="journey"></p>
+    <div class="heart">❤️</div>
+    <div class="subtext">Made with Pure Coding, AI and Passion</div>
+  </div>
+
+  <!-- About Me -->
+  <section id="about-me" class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h2>About Me</h2>
+        <p>II’m Ashwin — an engineer by training and a builder at heart. I started out studying how airplanes stay aloft, and that curiosity for “how things work” still drives me today. Whether I’m wiring up an IoT sensor, cleaning SAP data so a team can trust their numbers, or sketching a quick prototype for an AI idea, I like rolling up my sleeves and turning rough concepts into something everyone can use. Colleagues say they appreciate my calm, collaborative style: I document what I do, ask plenty of questions, and jump in wherever the bottleneck is — coding, troubleshooting hardware, or simply explaining the tech in plain German or English. What matters most to me is leaving people with tools that feel intuitive and reliable, so they can focus on the work that inspires them.</p>
+        <div class="scene mx-auto"><div class="cube">
+          <div class="face front">Scalable</div><div class="face back">Robust</div><div class="face right">Secure</div>
+          <div class="face left">Modular</div><div class="face top">Efficient</div><div class="face bottom">Intuitive</div>
+        </div></div>
+        <div class="profile-wrapper">
+          <img class="profile-pic" src="C:\Users\ashwi\OneDrive\Desktop\project\new portfolio\ashanimebg.png" alt="Profile">
+          <div class="comic-bubble">
+            Hi There!<br>
+            Thank you for looking through my portfolio
+          </div>
+          <button id="timelineBtn" class="my-timeline-button">My Timeline</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collapsible My Journey -->
+  <div id="timelineCollapse" class="collapse">
+    <div class="section"><h1>Education</h1><div class="timeline" id="education-timeline"></div></div>
+    <div class="section"><h1>Projects</h1><div class="timeline" id="project-timeline"></div></div>
+    <div class="section"><h1>Work Experience</h1><div class="timeline" id="work-timeline"></div></div>
+  </div>
+
+  <!-- Rights -->
+  <section id="rights"><p>© Ashwin Louis Jose. All rights reserved.</p></section>
+
+  <!-- Scripts -->
+  <script>
+    // Background gradient animation
+    let angle = 135;
+    setInterval(() => {
+      angle = (angle + 1) % 360;
+      document.body.style.backgroundImage = `linear-gradient(${angle}deg,var(--color-top-left) 0%,var(--color-top-right) 35%,var(--color-blend-mid) 60%,var(--color-bottom-right) 100%)`;
+    }, 20);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle timeline
+      document.getElementById('timelineBtn').onclick = () => {
+        document.getElementById('timelineCollapse').classList.toggle('show');
+      };
+      // Navbar reveal on scroll
+      const nav = document.querySelector('nav'), hero = document.querySelector('.content');
+      window.addEventListener('scroll', () => {
+        const rect = hero.getBoundingClientRect();
+        nav.classList.toggle('show', rect.top <= 0 && rect.bottom >= nav.offsetHeight);
+      });
+      // Contact popups
+      document.getElementById('contactLink').addEventListener('click', e => {
+        e.preventDefault();
+        window.location.href = 'mailto:ashwinlouis55@gmail.com';
+        window.open('https://outlook.office.com/mail/deeplink/compose?to=ashwinlouis55@gmail.com','_blank');
+      });
+      // CV confirm dialog
+      document.getElementById('cvLink').addEventListener('click', e => {
+        e.preventDefault();
+        if(confirm('Would you like to download the CV?')){
+          window.location.href='C:/Users/ashwi/OneDrive/Desktop/project/new portfolio/Ashwin Louis Jose 2025.pdf';
+        }
+      });
+      // Timeline data
+      const dataSets = {
+        'education-timeline':[ {title:'St. Joseph Public School',time:'2003–2015',desc:'Higher Secondary (Abitur), Kerala.'},
+                               {title:'Hindustan Aviation Academy',time:'2015–2018',desc:'Diploma in Aeronautical Engineering, Bengaluru.'} ],
+        'project-timeline':[ {title:'Flapping Wing MAV',time:'2017–2018',desc:'Ornithopter Project: Bionic Bird Build & Thrust Study; AERO Friedrichshafen 2023.'} ],
+        'work-timeline':[ {title:'Aerospace Transmission Tech',time:'Jun 2022–Jul 2023',desc:'IT & Org Support: Sensor Data Tracking; Firewall Update; SharePoint Modernization; VBA Automation.'},
+                          {title:'Propain Bicycles GmbH',time:'2023',desc:'Summer Job: Assembly & Repair of Bicycles.'},
+                          {title:'BHS Intralogistics',time:'Nov 2023–Nov 2024',desc:'SAP S/4HANA ERP: Data Migration; Master Data Quality; Dept. Training.'},
+                          {title:'BCA AG',time:'Current',desc:'Business Dev & IT Prod Dev: Prototyping; Agile Support; Documentation; QA; Analysis.'} ]
+      };
+      Object.entries(dataSets).forEach(([id,data])=>{
+        const container=document.getElementById(id);
+        data.forEach((item,i)=>{
+          const side=i%2?'right':'left';
+          const div=document.createElement('div'); div.className=`item ${side}`;
+          div.innerHTML=`<div class='content'><h2>${item.title}</h2><h4>${item.time}</h4><p>${item.desc}</p></div>`;
+          container.append(div);
+        });
+      });
+      // Reveal observer
+      const obs=new IntersectionObserver((entries,obsr)=>{
+        entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('show'); obsr.unobserve(entry.target);} });
+      },{threshold:0.1});
+      document.querySelectorAll('.timeline .content').forEach(el=>obs.observe(el));
+    });
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
